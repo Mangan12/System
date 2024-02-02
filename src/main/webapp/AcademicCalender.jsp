@@ -103,7 +103,7 @@
             <label for="file" style="margin-left: -296px;">Choose File(Upload That Excel format)):</label>
             <input type="file" class="form-control-file " style="margin-left: -296px;" id="file" name="file">
         </div>
-         <button type="submit" id="uploadBtn" class="btn btn-primary" style="margin-top: -70px" onclick="uploadFile()">Upload File</button>
+         <button type="submit" id="uploadBtn" class="btn btn-primary" style="margin-top: -70px" onclick="uploadFile()">Upload Training Calendar Data</button>
     </div>
 <!--     <div> -->
 <!--     <button type="submit" id="uploadBtn" class="btn btn-primary" style="margin-left: -325px; margin-top: 20px">Upload File</button> -->

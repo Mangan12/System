@@ -34,9 +34,11 @@
 <!-- Core theme JS (if needed) -->
 <script src="js/scripts.js"></script>
 <!--      ########## Data-table ########## -->
-<link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/1.13.7/css/jquery.dataTables.min.css">
+<link rel="stylesheet" type="text/css"
+	href="https://cdn.datatables.net/1.13.7/css/jquery.dataTables.min.css">
 <script src="https://code.jquery.com/jquery-3.7.0.js"></script>
-<script src="https://cdn.datatables.net/1.13.7/js/jquery.dataTables.min.js"></script>
+<script
+	src="https://cdn.datatables.net/1.13.7/js/jquery.dataTables.min.js"></script>
 
 <style type="text/css">
 .btn {
@@ -51,8 +53,8 @@
 </head>
 <body>
 
-	
-<a href="/AddTrainingGrade.jsp" class="btn btn-success mt-2">Add
+
+	<a href="/AddTrainingGrade.jsp" class="btn btn-success mt-2">Add
 		New Training Grade +</a>
 
 	<div class="card mt-2" style="width: 100%;">
@@ -68,7 +70,7 @@
 							<th>Sl.no.</th>
 							<th>Grade Code</th>
 							<th>Training Grade</th>
-							<th>Status  </th>
+							<th>Status</th>
 							<th>Action</th>
 
 						</tr>
@@ -78,10 +80,10 @@
 			</div>
 		</div>
 	</div>
-	
- 
 
-	   <script>
+
+
+	<script>
 		fetchDataAndDisplay();
 
 		function fetchDataAndDisplay() {
@@ -113,13 +115,12 @@
 				row.append("<td>" + training.slno + "</td>");
 				row.append("<td>" + training.attendgrade + "</td>");
 				row.append("<td>" + training.status + "</td>");
-				
-				 
-				row.append("<td><button class='btn btn-primary btn-sm edit-button' onclick='editTraining("
+
+				row
+						.append("<td><button class='btn btn-primary btn-sm edit-button' onclick='editTraining("
 								+ training.slno
 								+ ")'>Edit</button><button class='btn btn-danger btn-sm'   onclick='deleteTraining(this,"
-								+ training.slno
-								+ ")'>Delete</button></td>");
+								+ training.slno + ")'>Delete</button></td>");
 
 				tableBody.append(row);
 			}
@@ -127,34 +128,46 @@
 		}
 
 		// Sample functions for edit and delete
-		function deleteTraining(button,gradeId) {
-			// Make an AJAX request to the delete endpoint
-			var row = $(button).closest('tr');
-			$.ajax({
-				type : "Delete",
-				url : "/api/deleteGrade/" + gradeId,
-				success : function(response) {
-					var table = $('#trainingTable').DataTable();
-		            table.row(row).remove().draw(false);
-					toastr.success("TrainingGrade deleted successfully");
-					// Reload or update the data after deletion
-					fetchDataAndDisplay();
-				},
-				error : function(xhr, status, error) {
-					toastr.error("Failed to delete trainingGrade: " + error);
-				}
-			});
+		function deleteTraining(button, gradeId) {
+			var isConfirmed = confirm("Are you sure you want to delete this training?");
+
+			// Proceed with deletion only if the user confirms
+			if (isConfirmed) {
+				// Make an AJAX request to the delete endpoint
+				var row = $(button).closest('tr');
+				$.ajax({
+					type : "Delete",
+					url : "/api/deleteGrade/" + gradeId,
+					success : function(response) {
+						var table = $('#trainingTable').DataTable();
+						table.row(row).remove().draw(false);
+						toastr.success("TrainingGrade deleted successfully");
+						// Reload or update the data after deletion
+						fetchDataAndDisplay();
+					},
+					error : function(xhr, status, error) {
+						toastr
+								.error("Failed to delete trainingGrade: "
+										+ error);
+					}
+				});
+			} else
+				return;
 		}
-		
+
 		function editTraining(slno) {
-		    // Assuming you have an EditTraining.jsp page to handle editing
-		    var editUrl = "/EditTrainingGrade.jsp?slno="+slno;
- 
-		    // Redirect to the EditTraining.jsp page with the query string parameters
-		    window.location.href = editUrl;
+			var isConfirmed = confirm("Are you sure you want to edit this training?");
+
+			// Proceed with deletion only if the user confirms
+			if (isConfirmed) {
+				// Assuming you have an EditTraining.jsp page to handle editing
+				var editUrl = "/EditTrainingGrade.jsp?slno=" + slno;
+
+				// Redirect to the EditTraining.jsp page with the query string parameters
+				window.location.href = editUrl;
+			}else return;
 		}
- 
-	</script>    
+	</script>
 
 
 

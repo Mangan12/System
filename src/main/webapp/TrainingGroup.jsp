@@ -137,6 +137,10 @@
 
 		// Sample functions for edit and delete
 		function deleteTraining(button,group_id) {
+			var isConfirmed = confirm("Are you sure you want to delete this training?");
+
+			// Proceed with deletion only if the user confirms
+			if (isConfirmed) {
 			var row = $(button).closest('tr');
 			$.ajax({
 				type : "Delete",
@@ -154,13 +158,19 @@
 					toastr.error("Failed to delete training: " + error);
 				}
 			});
+			}else return;
 		}
 		function editTraining(group_id) {
-			// Assuming you have an EditTraining.jsp page to handle editing
-			var editUrl = "/EditTrainingGroup.jsp?group_id=" + group_id;
+			var isConfirmed = confirm("Are you sure you want to edit this training?");
 
-			// Redirect to the EditTraining.jsp page with the query string parameters
-			window.location.href = editUrl;
+			// Proceed with deletion only if the user confirms
+			if (isConfirmed) {
+			// Assuming you have an EditTraining.jsp page to handle editing
+				var editUrl = "/EditTrainingGroup.jsp?group_id=" + group_id;
+	
+				// Redirect to the EditTraining.jsp page with the query string parameters
+				window.location.href = editUrl;
+			}else return;
 		}
 	</script>
 

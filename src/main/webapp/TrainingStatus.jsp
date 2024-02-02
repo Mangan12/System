@@ -35,9 +35,11 @@
 <script src="js/scripts.js"></script>
 
 <!--      ########## Data-table ########## -->
-<link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/1.13.7/css/jquery.dataTables.min.css">
+<link rel="stylesheet" type="text/css"
+	href="https://cdn.datatables.net/1.13.7/css/jquery.dataTables.min.css">
 <script src="https://code.jquery.com/jquery-3.7.0.js"></script>
-<script src="https://cdn.datatables.net/1.13.7/js/jquery.dataTables.min.js"></script>
+<script
+	src="https://cdn.datatables.net/1.13.7/js/jquery.dataTables.min.js"></script>
 <style type="text/css">
 .btn {
 	font-size: 14px;
@@ -80,9 +82,8 @@
 
 
 	<script>
-		
 		fetchDataAndDisplay();
- 
+
 		function fetchDataAndDisplay() {
 			$.ajax({
 				type : "GET",
@@ -97,68 +98,77 @@
 				}
 			});
 		}
- 
+
 		function displayTrainingData(data) {
 			var trainings = data;
 			var tableBody = $("#trainingTable tbody");
- 
+
 			// Clear existing rows
 			tableBody.empty();
- 
+
 			for (var i = 0; i < trainings.length; i++) {
 				var training = trainings[i];
 				var row = $("<tr></tr>");
 				row.append("<td class='serial-column'>" + (i + 1) + "</td>");
 				row.append("<td >" + training.statuscode + "</td>");
- 
+
 				row.append("<td>" + training.statusname + "</td>");
 				row.append("<td >" + training.status + "</td>");
- 
-				
-				row.append("<td><button class='btn btn-primary btn-sm edit-button' onclick='editTraining("
-								+  training.statuscode
+
+				row
+						.append("<td><button class='btn btn-primary btn-sm edit-button' onclick='editTraining("
+								+ training.statuscode
 								+ ")'>Edit</button><button class='btn btn-danger btn-sm'   onclick='deleteTraining(this,"
 								+ training.statuscode
 								+ ")'>Delete</button></td>");
- 
+
 				tableBody.append(row);
 			}
 			var dataTable = $('#trainingTable').DataTable();
 		}
- 
+
 		// Sample functions for edit and delete
-		function deleteTraining(button,statuscode) {
+		function deleteTraining(button, statuscode) {
 			// Make an AJAX request to the delete endpoint
- 			var row = $(button).closest('tr');
-			$.ajax({
-				type : "Delete",
-				url : "/api/deleteStatus/" + statuscode,
-				success : function(response) {
-					var table = $('#trainingTable').DataTable();
-		            table.row(row).remove().draw(false);
-					toastr.success("Training deleted successfully");
-					// Reload or update the data after deletion
-					fetchDataAndDisplay();
-				},
-				error : function(xhr, status, error) {
-					toastr.error("Failed to delete training: " + error);
-				}
-			});
+			var row = $(button).closest('tr');
+
+			var isConfirmed = confirm("Are you sure you want to Delete this training?");
+
+			// Proceed with deletion only if the user confirms
+			if (isConfirmed) {
+				$.ajax({
+					type : "Delete",
+					url : "/api/deleteStatus/" + statuscode,
+					success : function(response) {
+						var table = $('#trainingTable').DataTable();
+						table.row(row).remove().draw(false);
+						toastr.success("Training deleted successfully");
+						// Reload or update the data after deletion
+						fetchDataAndDisplay();
+					},
+					error : function(xhr, status, error) {
+						toastr.error("Failed to delete training: " + error);
+					}
+				});
+			}else return;
 		}
-		
-		
+
 		// Sample function for edit
 		function editTraining(statuscode) {
-		    // Assuming you have an EditTraining.jsp page to handle editing
-		    var editUrl = "EditTrainingStatus.jsp?statuscode="+statuscode;
-		    
-		    // Convert the training object to a query string
-		    
- 
-		    // Redirect to the EditTraining.jsp page with the query string parameters
-		    window.location.href = editUrl;
+
+			var isConfirmed = confirm("Are you sure you want to edit this training?");
+
+			// Proceed with deletion only if the user confirms
+			if (isConfirmed) {
+				// Assuming you have an EditTraining.jsp page to handle editing
+				var editUrl = "EditTrainingStatus.jsp?statuscode=" + statuscode;
+
+				// Convert the training object to a query string
+
+				// Redirect to the EditTraining.jsp page with the query string parameters
+				window.location.href = editUrl;
+			}else return;
 		}
- 
 	</script>
 
 

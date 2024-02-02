@@ -1,13 +1,13 @@
 <%@ page language="java" contentType="text/html; charset=ISO-8859-1"
-    pageEncoding="ISO-8859-1"%>
+	pageEncoding="ISO-8859-1"%>
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Add Venue</title>
-  
-  <!-- Favicon-->
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Add Venue</title>
+
+<!-- Favicon-->
 <link rel="icon" type="image/x-icon" href="assets/favicon.ico" />
 <link rel="stylesheet"
 	href="https://cdn.jsdelivr.net/npm/bootstrap@3.3.7/dist/css/bootstrap.min.css"
@@ -18,207 +18,136 @@
 	href="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/css/toastr.min.css">
 <script
 	src="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/js/toastr.min.js"></script>
-  <style>
-    body {
-      font-family: Arial, sans-serif;
-      margin: 20px;
-      background-color: #f4f4f4;
-    }
+<style>
+body {
+	display: flex;
+	justify-content: center;
+}
+form {
+	max-width: 600px;
+	background-color: #fff;
+	padding: 20px;
+	border-radius: 8px;
+	box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+	margin-top: 20px;
+}
  
-    .container {
-      max-width: 400px;
-      margin: 0 auto;
-      background-color: #fff;
-      padding: 20px;
-      border-radius: 8px;
-      box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
-    }
+.form-column {
+	float: left;
+	width: 45%;
+	margin-right: 5%;
+}
  
-    label {
-      display: block;
-      margin-bottom: 10px;
-      font-weight: bold;
-    }
+label {
+	display: block;
+	margin-bottom: 8px;
+	color: #333;
+}
  
-    input {
-      width: 100%;
-      padding: 8px;
-      margin-bottom: 20px;
-      box-sizing: border-box;
-      border: 1px solid #ccc;
-      border-radius: 4px;
-    }
-    select {
-      width: 100%;
-      padding: 8px;
-      margin-bottom: 20px;
-      box-sizing: border-box;
-      border: 1px solid #ccc;
-      border-radius: 4px;
-    }
+input, select {
+	width: 100%;
+	padding: 10px;
+	margin-bottom: 15px;
+	border: 1px solid #ccc;
+	border-radius: 4px;
+	box-sizing: border-box;
+}
  
-    .button-container {
-      display: flex;
-      justify-content: space-between;
-    }
+.invalid-feedback {
+	color: red;
+	font-size: 12px;
+	margin-top: 5px;
+}
  
-    button {
-      flex: 1;
-      padding: 10px;
-      cursor: pointer;
-      border: none;
-      border-radius: 5px;
-      font-weight: bold;
-    }
+.buttons {
+	text-align: center;
+	clear: both;
+	margin-top: 15px;
+	border: none;
+	cursor: pointer;
+}
  
-    .save-button {
-      background-color: #008CBA;
-      color: white;
-      margin-right: 10px;
-    }
- 
-    .close-button {
-      background-color: #f44336;
-      color: white;
-      margin-left: 10px;
-    }
- 
-    button:hover {
-      opacity: 0.8;
-    }
-  </style>
+button {
+	width: 120px;
+	padding: 10px;
+	border: none;
+	cursor: pointer
+	background-color: #4caf50;
+}
+button:hover {
+	background-color: #45a049;
+}
+</style>
 </head>
 <body>
-<form id="addSessionForm" onsubmit="return saveGroup()">
- 
-  <div class="container">
-    <h2>Add Venue</h2>
- 
-    <label for="vname">Venue Name:</label>
-    <input type="text" id="vname" placeholder="Enter venue name" required>
+
+	<div class="container" align="center">
+	<h1>Add Venue</h1>
+		<form id="addSessionForm" class="text-left" onsubmit="return saveForm()">
+   			 <div class="form-row">
+		        <div class="form-column">
+		            <label for="vname">Venue Name:</label>
+		            <input type="text" id="vname" placeholder="Enter venue name" required>
+		            <label for="coordinatorname">Venue Co-Ordinator Name:</label>
+	                <input type="text" id="coordinatorname" required>
+	                <label for="vcontactno">Venue Co-Ordinator Mobile:</label>
+		            <input type="text" id="coordinatormobile" name="coordinatormobile" placeholder="Enter Mobile No" required pattern="\d{10}" oninput="this.value = this.value.replace(/\D/g, '')" title="Please enter 10 numbers" maxlength="10">
+		            <label for="coordinatoremail">Venue Co-Ordinator Email:</label>
+		            <input type="email" placeholder="example@example.xyz" id="coordinatoremail" required>
+		            <label for="vstate">Venue State:</label>
+		            <input type="text" id="vstate" placeholder="Enter state" required>
+		            
+		            <label for="vmandal">Venue Mandal:</label>
+		            <select id="vmandal" placeholder="Enter mandal" required>
+		                <option value="" disabled selected>Select Mandal</option>
+		            </select>
+		            <label for="vlocation">Venue Location:</label>
+		            <input type="text" id="vlocation" required>
+		        </div>
+		        <div class="form-column">
+		            <label for="vcapacity">Venue Capacity:</label>
+		            <input type="text" id="vcapacity" placeholder="Enter Venue Capacity" required pattern="\d{1,10}" oninput="this.value = this.value.replace(/[^0-9]/g, '');">
+		            <label for="vaddress">Venue Address:</label>
+		            <input type="text" id="vaddress" required>
+		            <label for="landmark">Landmark:</label>
+		            <input type="text" id="landmark" required>
+		            <label for="vtype">Venue Type:</label>
+		            <input type="text" id="vtype" required>
+		            <label for="vdistrict">Venue District:</label>
+			            <select id="vdistrict" placeholder="Enter district" required></select>
+		            
+		            <label for="maplocation">Map Location:</label>
+		            <input type="text" id="maplocation" required>
+		        </div>
+		        <div class="buttons">
+					<button type="submit" class="btn btn-primary" id="saveButton">Save</button>
+					&nbsp;
+					<button type="button" class="btn btn-danger" onclick="closeForm()" id="exitButton">Close</button>
+				</div>
+    	</div>
+ 	</form>
+
+</div>
+	<script>
+
+function validateForm() {
+
     
-     <label for="vstate">Venue State:</label>
-    <input type="text" id="vstate" placeholder="Enter state" required>
- 
-      <label for="vdistrict">Venue District:</label>
-      <select id="vdistrict" placeholder="Enter district" required></select>
- 
-  <label for="vmandal">Venue Mandal:</label>
-      <select id="vmandal" placeholder="Enter mandal" required></select>
- 
-  <label for="vlocation">Venue Location :</label>
-    <input type="text" id="vlocation"  required>
- 
-  <label for="vcapacity">Venue Capacity:</label>
-    <input type="text" id="vcapacity"  required>
- 
-  <label for="vaddress">Venue Address:</label>
-    <input type="text" id="vaddress"  required>
- 
-  <label for="landmark">Landmark:</label>
-    <input type="text" id="landmark"  required>
- 
-  <label for="vtype">Venue Type:</label>
-    <input type="text" id="vtype"  required>
- 
-  <label for="coordinatorname">Venue Co-Ordinator Name:</label>
-    <input type="text" id="coordinatorname"  required>
- 
-  <label for="coordinatormobile">Venue Co-Ordinator Mobile:</label>
-    <input type="text" id="coordinatormobile"  required>
- 
-  <label for="coordinatoremail">Venue Co-Ordinator Email:</label>
-    <input type="text" id="coordinatoremail"  required>
- 
-  <label for="maplocation">Map Location:</label>
-    <input type="text" id="maplocation"  required>
- 
- 
- 
- 
-    <div class="button-container">
-      <button type="button" class="save-button" onclick="saveVenue()">Save</button>
-      <button type="button" class="close-button" onclick="closeForm()">Close</button>
-    </div>
-  </div>
-  </form>
-<script>
-$(document).ready(function () {
-     function validateForm() {
-       // Add validation for other fields if needed
-       var vname = $("#vname").val();
-       var vstate = $("#vstate").val();
-       var vmandal = $("#vmandal").val();
-       var vdistrict = $("#vdistrict").val();
-       var vlocation = $("#vlocation").val();
-       var vcapacity = $("#vcapacity").val();
-       var vaddress = $("#vaddress").val();
-       var landmark = $("#landmark").val();
-       var vtype = $("#vtype").val();
-       var coordinatorname = $("#coordinatorname").val();
-       var coordinatormobile = $("#coordinatormobile").val();
-       var coordinatoremail = $("#coordinatoremail").val();
-       var maplocation = $("#maplocation").val();
- 
-       if (vname.trim() === "") {
-         toastr.error("Venue Name is required");
-         return false;
-       }
-       if (vstate.trim() === "") {
-           toastr.error("Venue State is required");
-           return false;
-         }
-       if (vmandal.trim() === "") {
-           toastr.error("Venue Mandal is required");
-           return false;
-         }
-       if (vdistrict.trim() === "") {
-           toastr.error("Venue District is required");
-           return false;
-         }
-       if (vlocation.trim() === "") {
-           toastr.error("Venue Location is required");
-           return false;
-         }
-       if (vcapacity.trim() === "") {
-           toastr.error("Venue Capacity is required");
-           return false;
-         }
-       if (vaddress.trim() === "") {
-           toastr.error("Venue Address is required");
-           return false;
-         }
-       if (landmark.trim() === "") {
-           toastr.error("Venue landmark is required");
-           return false;
-         }
-       if (vtype.trim() === "") {
-           toastr.error("Venue Type is required");
-           return false;
-         }
-       if (coordinatorname.trim() === "") {
-           toastr.error("Venue coordinatorname is required");
-           return false;
-         }
-       if (coordinatormobile.trim() === "") {
-           toastr.error("Venue coordinatormobile is required");
-           return false;
-         }
-       if (coordinatoremail.trim() === "") {
-           toastr.error("Venue coordinatoremail is required");
-           return false;
-         }
-       if (maplocation.trim() === "") {
-           toastr.error("Venue maplocation is required");
-           return false;
-         }
+   	var emailInput = document.getElementById("coordinatoremail");
+    var email = emailInput.value;
+    var emailPattern = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/;
+
+    if (!emailPattern.test(email)) {
+        alert("Please enter a valid email address.");
+        return false;
+    }
+
+    return true;
+  }
   
-       return true;
-     }
- 
- 
-      window.saveVenue = function () {
-        if (validateForm()) {
+  
+  function addVenueData(){
+	  if (validateForm()) {
           // Collect form data and create a JSON object
           var formData = {
             vname: $("#vname").val(),
@@ -244,7 +173,7 @@ $(document).ready(function () {
             data: JSON.stringify(formData),
             success: function (response) {
               console.log(response);
-              toastr.success("Venue saved successfully");
+              toastr.success("Venue saved successfully",'Success', { timeOut: 2000 });
               window.location.href = "/VenueSetUp.jsp";
             },
             error: function (xhr, status, error) {
@@ -253,8 +182,14 @@ $(document).ready(function () {
             },
           });
         }
+  }
+$(document).ready(function () {
+     
  
+ 
+      window.saveForm = function () {
         // Prevent the default form submission
+        addVenueData();
         return false;
       };
  
@@ -264,9 +199,9 @@ $(document).ready(function () {
       };
     });
   </script>
-  
-  
-  <script>
+
+
+	<script>
   
  
   var districtDropdownPopulated = false;
@@ -342,6 +277,6 @@ $(document).ready(function () {
     }
   });
 </script>
-  
+
 </body>
 </html>
