@@ -5,7 +5,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Edit Component Resource Limit</title>
+<title>Edit Component Limit</title>
 
 <!-- Favicon-->
 <link rel="icon" type="image/x-icon" href="assets/favicon.ico" />
@@ -89,25 +89,15 @@ button:hover {
 			onsubmit="return submitForm()">
 			<div class="form-row">
 				<div class="form-column">
-					<label for="resources">Resources:</label> <select id="resources"
-						placeholder="Enter Resources" required>
-						<option value="projector">Projector</option>
-						<option value="venue">Venue</option>
-						<option value="duster">Duster</option>
-						<option value="speaker">Speaker</option>
-						<option value="marker">Marker</option>
-						<option value="table">Table</option>
-						<option value="chair">Chair</option>
-					</select> <label for="approved_rate">Approved_rate:</label> <input
+					<label for="resources">Resources:</label> 
+					<input id="resources" readonly>
+					 <label for="approved_rate">Approved_rate:</label> <input
 						type="text" id="approved_rate" required>
 				</div>
 				<div class="form-column">
 					<label for="budgeted_year">Budgeted_year</label> <input type="text"
 						id="budgeted_year" placeholder="Enter Budgeted year" readonly>
-					<label for="unit">Unit:</label> <select id="unit"
-						placeholder="Options" required>
-						<option value="Per_day">Per Day</option>
-						<option value="lumpsum">LumpSum</option>
+					<label for="unit">Unit:</label> <select id="unit" required>
 					</select> <input type="hidden" id="sl" name="sl">
 					<!-- Hidden field for sl -->
 				</div>
@@ -126,20 +116,6 @@ button:hover {
 	$(document).ready(function () {
 	    // Get field values from URL parameters
 	    editCLimit();
-	    $('#resources').on('change', function() {
-	        // Get the selected option
-	        const selectedOption = $(this).find('option:selected');
-	      
-	        // Get the additional data associated with the selected option
-	        const additionalData = selectedOption.data('additionalData');
-	      
-	        // Set the value of the #budgeted_year dropdown to the additionalData
-	        $('#budgeted_year').val(additionalData);
-	      
-	        // Clear existing options and append a new option with the additionalData as its value
-	        $('#budgeted_year').empty();
-	        $('#budgeted_year').append('<option value="' + additionalData + '">' + additionalData + '</option>');
-	    });
 
 	    
 	    window.submitForm = function() {
@@ -155,30 +131,6 @@ button:hover {
 	    
 	});
 
-		
-		function fetchResourse() {
-		    
-		      $.ajax({
-		        url: '${pageContext.request.contextPath}/api/getallcomponents',
-		        type: 'GET',
-		        dataType: 'json',
-		        success: function (data) {
-		          const districtDropdown = $('#resources');
-		          districtDropdown.append('<option value="" selected disabled>Select Resourse</option>');
-		          $.each(data, function(index, item) {
-		          districtDropdown.append($('<option>', {
-						value : item.resources,
-						text : item.resources,
-						'data-byear' :item.budgeted_year
-					}));
-		          });
-		        },
-		        error: function (error) {
-		          console.error('Error fetching district data:', error);
-		        }
-		      });
-		    }
-		
 		
 		function updateComponentData() {
 			var sl = getUrlParameter('sl');
@@ -231,23 +183,21 @@ button:hover {
 									+ sl, // Replace with your actual endpoint
 							dataType : "json",
 							success : function(data) {
-								console.log(data);
-								const res = $('#resources');
 								const unit = $('#unit');
-					            // Clear existing options
-					            res.empty();
-					            unit.empty();
-					 
-					            // Add the selected district as the first option
-					            res.append('<option value="' + data.resources + '">' + data.resources + '</option>');
-					            unit.append('<option value="' + data.unit + '">' + data.unit + '</option>');
+								unit.empty();
+					            unit.append('<option value="' + (data.unit).trim() + '">' + (data.unit).trim() + '</option>');
+					            if((data.unit).trim() === "Per Day"){
+					            	console.log("pd");
+					            	unit.append('<option value="LumpSum">LumpSum</option>');
+					            }else{
+					            	console.log("ls");
+					            	unit.append('<option value="Per Day">Per Day</option>');
+					            }
 								// Populate form fields with the retrieved data
 								$('#sl').val(data.sl);
 								$('#budgeted_year').val(data.budgeted_year);
-						
+								$('#resources').val(data.resources);
 								$('#approved_rate').val(data.approved_rate);
-
-								// Display the form for editing
 								$('#myForm').show();
 							},
 							error : function(xhr, status, error) {

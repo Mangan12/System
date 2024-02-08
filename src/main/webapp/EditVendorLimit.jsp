@@ -74,22 +74,20 @@
 <body>
 
     <div class="container" align="center">
-        <h1>Edit Component Resource Limit</h1>
+        <h1>Edit Vendor Limit</h1>
         <form id="myForm" class="text-left" onsubmit="return submitForm()">
             <div class="form-row">
                 <div class="form-column">
-                    <label for="resources">Vendor Name:</label>
-                    <input type="text" id="resources" required>
+                    <label for="vendorName">Vendor Name:</label>
+                    <input type="text" id="vendorName" required>
                     <label for="approved_rate">Approved Rate:</label>
                     <input type="text" id="approved_rate" required>
                 </div>
                 <div class="form-column">
                     <label for="budgeted_year">Budgeted Year</label>
-                    <input type="text" id="budgeted_year" placeholder="Enter Budgeted year">
+                    <input type="text" id="budgeted_year" placeholder="Enter Budgeted year" readonly>
                     <label for="unit">Unit:</label>
-                    <input type="text" id="unit" required>
-
-                    <input type="hidden" id="sl" name="sl">
+                    <select id="unit" required></select>
                 </div>
                   <div class="form-column">
                     <label for="actual_rate">Actual Rate:</label>
@@ -106,17 +104,9 @@
 
     <script>
         $(document).ready(function () {
-            // Fetch resource data on page load
-            fetchResourse();
-            // Get field values from URL parameters
+            
             editCLimit();
-            // Handle change event of the #resources dropdown
-            $('#resources').on('change', function() {
-                const selectedOption = $(this).find('option:selected');
-                const additionalData = selectedOption.data('byear');
-                $('#budgeted_year').val(additionalData);
-            });
-
+        
             window.submitForm = function() {
                 var isConfirmed = confirm("Are you sure you want to edit this training?");
                 if (isConfirmed) {
@@ -126,35 +116,12 @@
             }
         });
 
-        function fetchResourse() {
-
-            $.ajax({
-                url: '${pageContext.request.contextPath}/api/getbyVendorLimitid/'+ sl,
-                type: 'GET',
-                dataType: 'json',
-                success: function (data) {
-                    const dropdown = $('#resources');
-                    dropdown.empty();
-                    dropdown.append('<option value="" selected disabled>Select Resource</option>');
-                    $.each(data, function(index, item) {
-                        dropdown.append($('<option>', {
-                            value: item.resources,
-                            text: item.resources,
-                            'data-byear': item.budgeted_year
-                        }));
-                    });
-                },
-                error: function (error) {
-                    console.error('Error fetching resource data:', error);
-                }
-            });
-        }
+        
 
         function updateComponentData() {
             var sl = getUrlParameter('sl');
             var formData = {
-                sl: $("#sl").val(),
-                vendorName: $("#resources").val(),
+                vendorName: $("#vendorName").val(),
                 approvedrate: $("#approved_rate").val(),
                 actualrate: $("#actual_rate").val(),
                 budgetedYear: $("#budgeted_year").val(),
@@ -192,21 +159,17 @@
                     url: "${pageContext.request.contextPath}/api/getbyVendorLimitid/" + sl,
                     dataType: "json",
                     success: function(data) {
-                        const res = $('#resources');
                         const unit = $('#unit');
-//                         res.empty();
-//                         unit.empty();
-
-//                         // Assuming data is an array of items
-//                         $.each(data, function(index, item) {
-//                             res.append('<option value="' + item.vendorName + '" data-byear="' + item.budgetedYear + '">' + item.resources + '</option>');
-//                         });
-
-//                         unit.append('<option value="' + data.unit + '">' + data.unit + '</option>'); // Adjust this according to your data structure
-
-                        $('#resources').val(data.vendorName); // Assuming sl is a property of the first item
-                        $('#unit').val(data.unit); // Assuming sl is a property of the first item
-                        $('#sl').val(data.sl); // Assuming sl is a property of the first item
+						unit.empty();
+			            unit.append('<option value="' + (data.unit).trim() + '">' + (data.unit).trim() + '</option>');
+			            if((data.unit).trim() === "Per Day"){
+			            	console.log("pd");
+			            	unit.append('<option value="LumpSum">LumpSum</option>');
+			            }else{
+			            	console.log("ls");
+			            	unit.append('<option value="Per Day">Per Day</option>');
+			            }
+                        $('#vendorName').val(data.vendorName); // Assuming sl is a property of the first item
                         $('#budgeted_year').val(data.budgetedYear); // Assuming budgetedYear is a property of the first item
                         $('#approved_rate').val(data.approvedrate); // Adjust this according to your data structure
                         $('#actual_rate').val(data.actualrate); // Adjust this according to your data structure

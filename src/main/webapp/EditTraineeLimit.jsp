@@ -79,18 +79,15 @@
             <div class="form-row">
                 <div class="form-column">
                     <label for="Expense">Expense Type:</label>
-                    <input type="text" id="Expense" required>
+                    <input type="text" id="Expense" required readonly>
                     <label for="Trainee">Trainee Role:</label>
                     <input type="text" id="Trainee" required>
                 </div>
                 <div class="form-column">
                     <label for="budgeted_year">Budgeted Year</label>
-                    <input type="text" id="budgeted_year" placeholder="Enter Budgeted year">
+                    <input type="text" id="budgeted_year" placeholder="Enter Budgeted year" readonly>
                     <label for="unit">Unit:</label>
-                    <input type="text" id="unit" required>
-
-                    <input type="hidden" id="sl" name="sl">
-                    
+                    <select id="unit" required></select>
                 </div>
                   <div class="form-column">
                     <label for="Approved">Approved Rate:</label>
@@ -107,17 +104,8 @@
 
     <script>
         $(document).ready(function () {
-            // Fetch resource data on page load
-            fetchResourse();
-            // Get field values from URL parameters
             editCLimit();
-            // Handle change event of the #resources dropdown
-            $('#resources').on('change', function() {
-                const selectedOption = $(this).find('option:selected');
-                const additionalData = selectedOption.data('byear');
-                $('#budgeted_year').val(additionalData);
-            });
-
+        
             window.submitForm = function() {
                 var isConfirmed = confirm("Are you sure you want to edit this training?");
                 if (isConfirmed) {
@@ -127,35 +115,10 @@
             }
         });
 
-        function fetchResourse() {
-
-            $.ajax({
-                url: '${pageContext.request.contextPath}/api/getbyVendorLimitid/'+ sl,
-                type: 'GET',
-                dataType: 'json',
-                success: function (data) {
-                    const dropdown = $('#resources');
-                    dropdown.empty();
-                    dropdown.append('<option value="" selected disabled>Select Resource</option>');
-                    $.each(data, function(index, item) {
-                        dropdown.append($('<option>', {
-                            value: item.resources,
-                            text: item.resources,
-                            'data-byear': item.budgeted_year
-                        }));
-                    });
-                },
-                error: function (error) {
-                    console.error('Error fetching resource data:', error);
-                }
-            });
-        }
-      
-    
+        
         function updateComponentData() {
-            var sl = getUrlParameter('sl');
+         	var sl = getUrlParameter('sl');
             var formData = {
-                sl: $("#sl").val(),
                 expenseType: $("#Expense").val(),
                 traineeRole: $("#Trainee").val(),
                 budgetedYear: $("#budgeted_year").val(),
@@ -194,24 +157,22 @@
                     url: "${pageContext.request.contextPath}/api/getbyTraineesLimitid/" + sl,
                     dataType: "json",
                     success: function(data) {
-                        const res = $('#resources');
-                        const unit = $('#unit');
-//                         res.empty();
-//                         unit.empty();
-
-//                         // Assuming data is an array of items
-//                         $.each(data, function(index, item) {
-//                             res.append('<option value="' + item.vendorName + '" data-byear="' + item.budgetedYear + '">' + item.resources + '</option>');
-//                         });
-
-//                         unit.append('<option value="' + data.unit + '">' + data.unit + '</option>'); // Adjust this according to your data structure
+                    	const unit = $('#unit');
+						unit.empty();
+			            unit.append('<option value="' + (data.unit).trim() + '">' + (data.unit).trim() + '</option>');
+			            if((data.unit).trim() === "Per Day"){
+			            	console.log("pd");
+			            	unit.append('<option value="LumpSum">LumpSum</option>');
+			            }else{
+			            	console.log("ls");
+			            	unit.append('<option value="Per Day">Per Day</option>');
+			            }
 
                         $('#Expense').val(data.expenseType); // Assuming sl is a property of the first item
                         $('#Trainee').val(data.traineeRole); // Assuming sl is a property of the first item
-                        $('#sl').val(data.sl); // Assuming sl is a property of the first item
                         $('#budgeted_year').val(data.budgetedYear); // Assuming budgetedYear is a property of the first item
                         $('#Approved').val(data.approvedRate); // Adjust this according to your data structure
-                        $('#unit').val(data.unit); // Adjust this according to your data structure
+             
 
                         $('#myForm').show();
                     

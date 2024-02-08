@@ -211,7 +211,7 @@ button:hover {
 					<div class="form-group">
 						<label for="resources">Resources</label> <input type="text"
 							id="resources" class="form-control" placeholder="Enter Resources name"
-							required>
+							required readonly>
 					</div>
 					<div class="form-group">
 						<label for="description">Description:</label> <input

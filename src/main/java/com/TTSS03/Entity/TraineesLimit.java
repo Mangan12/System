@@ -94,6 +94,12 @@ public class TraineesLimit {
 	public void setRecordStatus(String recordStatus) {
 		this.recordStatus = recordStatus;
 	}
+	@Override
+	public String toString() {
+		return "TraineesLimit [sl=" + sl + ", budgetedYear=" + budgetedYear + ", traineeRole=" + traineeRole
+				+ ", expenseType=" + expenseType + ", cityType=" + cityType + ", approvedRate=" + approvedRate
+				+ ", unit=" + unit + ", remarks=" + remarks + ", recordStatus=" + recordStatus + "]";
+	}
  
 
 }

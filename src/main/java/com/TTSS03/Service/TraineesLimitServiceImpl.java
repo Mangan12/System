@@ -34,11 +34,12 @@ public class TraineesLimitServiceImpl implements TraineesLimitService {
 	 @Override
 		@Transactional
 		public void updateTraineesLimit(long sl, TraineesLimit traineesLimit) {
+		 System.out.println(traineesLimit);
 			// TODO Auto-generated method stub
 			traineesLimitRepository.updateTraineesLimit(sl, traineesLimit.getBudgetedYear(),
-					traineesLimit.getApprovedRate(),
-					traineesLimit.getExpenseType(),
 					traineesLimit.getTraineeRole(),
+					traineesLimit.getExpenseType(),
+					traineesLimit.getApprovedRate(),
 					traineesLimit.getUnit());
 			
 		} 

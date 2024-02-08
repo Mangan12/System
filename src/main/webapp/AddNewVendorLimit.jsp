@@ -86,7 +86,7 @@
             <div class="form-row">
                 <div class="form-column">
                     <label for="Vendor">Vendor Name:</label>
-                    <select id="Vendor" placeholder="Select Vendor Name" required></select>
+                    <select id="Vendor" required></select>
                     <label for="approved_rate">Approved Rate:</label>
                     <input type="text" id="approved_rate" required>
                 </div>
@@ -94,9 +94,9 @@
                     <label for="budgeted_year">Budgeted Year</label>
                     <input type="text" id="budgeted_year" placeholder="Enter Budgeted year">
                     <label for="unit">Unit:</label>
-                    <select id="unit" placeholder="Options" required>
-                        <option value="Per_day">Per Day</option>
-                        <option value="lumpsum">LumpSum</option>
+                    <select id="unit" required>
+                        <option value="Per Day">Per Day</option>
+                        <option value="LumpSum">LumpSum</option>
                     </select>
                 </div>
                 <div class="form-column">

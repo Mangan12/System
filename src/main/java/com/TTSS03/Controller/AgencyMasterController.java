@@ -28,7 +28,7 @@ public class AgencyMasterController {
 	
 	@GetMapping("/agency")
 	public ResponseEntity<List<AgencyMaster>>findAllAgency(){
-		List<AgencyMaster> allAgency = agencyMasterService.getAllAgency();
+		List<AgencyMaster> allAgency = agencyMasterService.getAllAgencyy();
 		return ResponseEntity.ok(allAgency);
 		
 	}

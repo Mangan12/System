@@ -47,6 +47,7 @@ public class TraineesLimitController {
     @PutMapping("/updateTraineesLimit/{sl}")
     public ResponseEntity<String> updateVendorLimit(@PathVariable long sl, @RequestBody TraineesLimit traineesLimit) {
         try {
+        	System.out.println(traineesLimit);
             traineesLimitService.updateTraineesLimit(sl, traineesLimit);
             return new ResponseEntity<>("TraineesLimit updated successfully", HttpStatus.OK);
         } catch (Exception e) {

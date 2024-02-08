@@ -82,11 +82,11 @@
 
     <div class="container" align="center">
         <h1>Add Component Resource Limit</h1>
-        <form id="addSessionForm" class="text-left">
+        <form id="addSessionForm" class="text-left" onsubmit="return saveForm()">
             <div class="form-row">
                 <div class="form-column">
                     <label for="expense">Expense Type:</label>
-                    <select id="expense" placeholder="Select Vendor Name" required></select>
+                    <select id="expense"  required></select>
                     <label for="Trainee">Trainee Role:</label>
                     <input type="text" id="Trainee" required>
                 </div>
@@ -94,9 +94,9 @@
                     <label for="budgeted_year">Budgeted Year</label>
                     <input type="text" id="budgeted_year" placeholder="Enter Budgeted year">
                     <label for="unit">Unit:</label>
-                    <select id="unit" placeholder="Options" required>
-                        <option value="Per day">Per Day</option>
-                        <option value="lumpsum">LumpSum</option>
+                    <select id="unit"  required>
+                        <option value="Per Day">Per Day</option>
+                        <option value="LumpSum">LumpSum</option>
                     </select>
                 </div>
                 <div class="form-column">
@@ -104,7 +104,7 @@
                     <input type="text" id="approved_rate" required>
                     </div>
                  <div class="buttons">
-                    <button type="button" class="btn btn-primary" id="saveButton">Save</button>
+                    <button type="submit" class="btn btn-primary" id="saveButton">Save</button>
                     &nbsp;
                     <button type="button" class="btn btn-danger" onclick="closeForm()" id="exitButton">Close</button>
                 </div>
@@ -129,6 +129,11 @@
                 $("#budgeted_year").val(additionalData);
             });
 
+            window.saveForm = function() {
+				// Prevent the default form submission
+				addTlimitData()
+				return false;
+			};
             window.closeForm = function() {
                 window.location.href = '${pageContext.request.contextPath}/TraineeLimit.jsp';
             };
@@ -157,7 +162,7 @@
             });
         }
 
-        function saveComponentData() {
+        function addTlimitData() {
             var formData = {
             	expenseType: $("#expense").val(),
             	approvedRate: $("#approved_rate").val(),
@@ -183,11 +188,6 @@
                     toastr.error('Failed to save data');
                 }
             });
-        }
-
-        function validateForm() {
-            // Add your validation logic here
-            return true; // Return true if form is valid, false otherwise
         }
     </script>
 
